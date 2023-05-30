@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: ServiceAnalyzer
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${REGISTRY_IP:localhost}:${REGISTRY_PORT:8761}/eureka
+
+
+KubeSphereConfig:
+  url: ${KUBESPHERE_URL:http://192.168.1.102:30880}
+  username: ${KUBESPHERE_USERANME:wangteng}
+  password: ${KUBESPHERE_PASSWORD:WangTeng123456}
