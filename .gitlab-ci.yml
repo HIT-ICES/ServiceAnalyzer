@@ -1,0 +1,11 @@
+
+stages:
+  - sonarqube_stage
+sonarqube_ci_stanza:                                                                # free name
+  image: sonarsource/sonar-scanner-cli:${SONAR_SCANNER_CLI_VERSION}
+  stage: sonarqube_stage                                                            # free name
+  variables:
+    SONAR_PROJECT_BASE_DIR: "$CI_PROJECT_DIR"
+  script:
+    - /usr/bin/entrypoint.sh sonar-scanner -Dsonar.projectKey="$CI_PROJECT_NAME"    # sonar.projectKey defines the name of the project in SonarQube.
+ 
