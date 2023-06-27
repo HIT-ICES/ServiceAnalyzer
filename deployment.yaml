@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-analyzer
+  namespace: +_namespace+
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+  selector:
+    app: service-analyzer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-analyzer
+  namespace: +namespace+
+spec:
+  selector:
+    matchLabels:
+      app: service-analyzer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-analyzer
+    spec:
+      containers:
+        - name: service-analyzer
+          image: service-analyzer:+image_tag+
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 500Mi
+            limits:
+              cpu: 400m
+              memory: 2000Mi
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 160
+            periodSeconds: 10
+            timeoutSeconds: 5
+          env:
+            - name: REGISTRY_IP # 注册中心地址
+              value: ""
+            - name: REGISTRY_PORT # 注册中心端口
+              value: ""

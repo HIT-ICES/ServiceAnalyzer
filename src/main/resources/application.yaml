@@ -11,9 +11,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://${REGISTRY_IP:localhost}:${REGISTRY_PORT:8761}/eureka
-
-
-KubeSphereConfig:
-  url: ${KUBESPHERE_URL:http://192.168.1.102:30880}
-  username: ${KUBESPHERE_USERANME:wangteng}
-  password: ${KUBESPHERE_PASSWORD:WangTeng123456}
