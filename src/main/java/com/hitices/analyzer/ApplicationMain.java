@@ -2,7 +2,6 @@ package com.hitices.analyzer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * @author wangteng
@@ -10,7 +9,6 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @date 2023/5/1
  */
 @SpringBootApplication
-@EnableEurekaClient
 public class ApplicationMain {
     public static void main(String[] args) {
         SpringApplication.run(ApplicationMain.class);

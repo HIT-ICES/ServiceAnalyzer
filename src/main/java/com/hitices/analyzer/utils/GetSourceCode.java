@@ -24,7 +24,7 @@ public class GetSourceCode {
 
     private static Logger logger = LogManager.getLogger(GetSourceCode.class);
 
-    private final static String CODE_DIWNLOAD_PATH  = "D:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.1.3\\jbr\\bin\\IdeaProjects\\serviceanalyzer\\tmp";
+    private final static String CODE_DIWNLOAD_PATH  = "\\serviceanalyzer\\service";
 
 
     /**
