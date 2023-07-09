@@ -31,11 +31,9 @@ public class GetSourceCode {
      * 下载源码 并得到路径信息
      */
     public static Map<String, MPathInfo> getCodeAndGetMPathInfo(String url) {
-        logger.info(1);
         String[] urls = url.split("/");
         String projectName = urls[urls.length - 1].split("\\.")[0];
         List<String> allTags = getAllTags(url, projectName);
-        logger.info(2);
         Map<String, MPathInfo> map = new HashMap<>();
         for (String tag : allTags) {
             try {
@@ -216,16 +214,6 @@ public class GetSourceCode {
         }
         git.close();
         return new ArrayList<>(git.getRepository().getTags().keySet());
-    }
-
-    public static void main(String[] args) {
-        Map<String, MPathInfo> map = GetSourceCode.getCodeAndGetMPathInfo("http://192.168.1.104:12345/wangteng/service1.git");
-        for (Map.Entry<String, MPathInfo> entry : map.entrySet()) {
-            logger.info(entry.getValue());
-            Service service = GetServiceInfo.getMservice(entry.getKey(), entry.getValue());
-            logger.info(service.toString());
-        }
-
     }
 }
 

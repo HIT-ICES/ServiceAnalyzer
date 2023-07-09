@@ -30,14 +30,10 @@ public class MController {
     @PostMapping("/newService")
     public MResponse newService(@RequestBody MServiceRegisterBean registerBean){
         executorService.submit(() -> {
-            Map<String, MPathInfo> map = GetSourceCode.getCodeAndGetMPathInfo(registerBean.getRepo());
-            List<Service> serviceList = new ArrayList<>();
-            for (Map.Entry<String, MPathInfo> entry : map.entrySet()) {
-                Service service = GetServiceInfo.getMservice(entry.getKey(), entry.getValue());
-                service.setName(registerBean.getServiceName());
-                logger.info(service.toString());
-                serviceList.add(service);
-            }
+            MPathInfo mPathInfo = GetSourceCode.getCodeByVersion(registerBean.getRepo(), registerBean.getVersion().getPatch());
+            Service service = GetServiceInfo.getMservice(registerBean.getVersion().getPatch(), mPathInfo);
+            service.setName(registerBean.getServiceName());
+            logger.info(service.toString());
 
             logger.info("Trying to send service infos to server...");
             // TODO: 2023/6/27 回调
