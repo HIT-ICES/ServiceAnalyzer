@@ -60,20 +60,17 @@ public class GetSourceCode {
     public static MPathInfo getCodeByVersion(String url, String version) {
         String[] urls = url.split("/");
         String projectName = urls[urls.length - 1].split("\\.")[0];
-        MPathInfo mPathInfo = null;
+        MPathInfo mPathInfo = new MPathInfo();
         File file = new File(CODE_DIWNLOAD_PATH + "/" + projectName + "_" + version);
-        if (file.exists()) {
+        try {
+            Git git = Git.cloneRepository().setURI(url).setBranch(version).setDirectory(file).call();
+            git.close();
             mPathInfo = getMPathInfo(version, projectName);
-        } else {
-            try {
-                Git git = Git.cloneRepository().setURI(url).setBranch(version).setDirectory(file).call();
-                git.close();
-                mPathInfo = getMPathInfo(version, projectName);
-            } catch (GitAPIException g) {
-                logger.error(g);
-            }
+        } catch (GitAPIException g) {
+            logger.error(g);
         }
         mPathInfo.setGitUrl(url);
+        mPathInfo.setLocal(file.getPath());
         return mPathInfo;
     }
 

@@ -25,7 +25,7 @@ import java.util.*;
 
 public class GetServiceInfo {
 
-    private static Logger logger = LogManager.getLogger(GetSourceCode.class);
+    private static Logger logger = LogManager.getLogger(GetServiceInfo.class);
 
     public static Service getMservice(String version, MPathInfo pathInfo) {
         Service mService = new Service();
@@ -36,11 +36,11 @@ public class GetServiceInfo {
         mSvcVersion.setMinor(versions[1]);
         mSvcVersion.setPatch(version);
         mService.setVersion(mSvcVersion);
-        Map<String, Interface> map = new HashMap<>();
+        List<Interface> list = new ArrayList<>();
         for (String s : pathInfo.getControllerListPath()) {
-            map.putAll(getServiceInfo(s,mService.getRepo()));
+            list.addAll(getServiceInfo(s,mService.getRepo()));
         }
-        mService.setInterfaces(map);
+        mService.setInterfaces(list);
         return mService;
 
     }
@@ -50,8 +50,8 @@ public class GetServiceInfo {
      *
      * @return Service类，返回该类的信息
      */
-    public static Map<String, Interface> getServiceInfo(String codepath, String contextPath) {
-        Map<String, Interface> map = new HashMap<>();
+    public static List<Interface> getServiceInfo(String codepath, String contextPath) {
+        List<Interface> list = new ArrayList<>();
         CompilationUnit compilationUnit = null;
         File file;
         try {
@@ -88,8 +88,7 @@ public class GetServiceInfo {
             for (MethodDeclaration m : methodDeclarationList) {
                 Interface mSvcInterface = new Interface();
                 mSvcInterface.setId(m.getName().toString());
-//                mSvcInterface.setReturnType(m.getType().toString());
-                List<String> pathurl = new ArrayList<>();
+                Set<String> pathurl = new HashSet<>();
                 NodeList<AnnotationExpr> anno = m.getAnnotations();
                 List<String> pathContextsFunction = new ArrayList<>();
                 for (AnnotationExpr annotationExpr : anno) {
@@ -114,15 +113,15 @@ public class GetServiceInfo {
                             }
                         }
                     } else if("ApiOperation".equals(annoName)){
-                        logger.info(childNodes.toString());
-                        logger.info(childNodes.size());
                         for (Node node: childNodes){
                             if (node.getChildNodes().size()>0){
-                                logger.info(node.getChildNodes().get(0)+"\t"+node.getChildNodes().get(1));
+                                if (node.getChildNodes().get(0).toString().equals("httpMethod")){
+                                    mSvcInterface.setMethod(node.getChildNodes().get(1).toString().replace("\"", ""));
+                                }else {
+                                    mSvcInterface.setInfo(node.getChildNodes().get(1).toString().replace("\"", ""));
+                                }
                             }
-
                         }
-                        continue;
                     }
                     for (String string1 : pathContexts) {
                         for (String string2 : pathContextsFunction) {
@@ -136,11 +135,15 @@ public class GetServiceInfo {
                 }
                 for (String string : pathurl) {
                     mSvcInterface.setPath(string);
-                    map.put(string, mSvcInterface);
+                    // todo
+                    mSvcInterface.setInputSize(0.0);
+                    mSvcInterface.setOutputSize(0.0);
+                    list.add(mSvcInterface);
                 }
             }
         }
-        return map;
+
+        return list;
     }
 
     public static List<String> getContextPath(String contextPath,NodeList<AnnotationExpr> annotations){
@@ -169,6 +172,27 @@ public class GetServiceInfo {
             }
         }
         return pathContexts;
+    }
+
+    public static boolean deleteDir(String path){
+        File file = new File(path);
+        if(!file.exists()){
+            return false;
+        }
+        String[] content = file.list();
+        for(String name : content){
+            File temp = new File(path, name);
+            if(temp.isDirectory()){
+                deleteDir(temp.getAbsolutePath());
+                temp.delete();//删除空目录
+            }else{
+                System.gc();
+                if(!temp.delete()){
+                    logger.debug("Failed to delete " + name);
+                }
+            }
+        }
+        return true;
     }
 }
 

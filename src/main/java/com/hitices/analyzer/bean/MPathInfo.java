@@ -15,11 +15,15 @@ public class MPathInfo {
 
     private List<String> controllerListPath;
 
+    private String local;
+
     @Override
     public String toString() {
         return "MPathInfo{" +
-                "application_Path='" + applicationPath + '\'' +
-                ", controller_ListPath=" + controllerListPath +
+                "gitUrl='" + gitUrl + '\'' +
+                ", applicationPath='" + applicationPath + '\'' +
+                ", controllerListPath=" + controllerListPath +
+                ", local='" + local + '\'' +
                 '}';
     }
 }

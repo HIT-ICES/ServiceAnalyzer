@@ -10,14 +10,18 @@ import lombok.Setter;
 public class Interface {
     private String id;
     private String path;
-    private Double inputSize;
-    private Double outputSize;
+    private String method;
+    private String info;
+    private Double inputSize = null;
+    private Double outputSize = null;
 
     @Override
     public String toString() {
         return "Interface{" +
                 "id='" + id + '\'' +
                 ", path='" + path + '\'' +
+                ", method='" + method + '\'' +
+                ", info='" + info + '\'' +
                 ", inputSize=" + inputSize +
                 ", outputSize=" + outputSize +
                 '}';

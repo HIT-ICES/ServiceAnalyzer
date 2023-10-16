@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -17,7 +18,10 @@ public class Service {
     private String repo;
     private String image;
     private Version version;
-    private Map<String, Interface> interfaces;
+    private List<Interface> interfaces;
+    private Resource idleResource = new Resource();
+    private Resource desiredResource = new Resource();
+    private int desiredCapability = 0;
 
     @Override
     public String toString() {
@@ -26,8 +30,8 @@ public class Service {
                 ", name='" + name + '\'' +
                 ", repo='" + repo + '\'' +
                 ", image='" + image + '\'' +
-                ", version=" + version.toString() +
-                ", interfaces=" + interfaces.toString() +
+                ", version=" + version +
+                ", interfaces=" + interfaces +
                 '}';
     }
 }
