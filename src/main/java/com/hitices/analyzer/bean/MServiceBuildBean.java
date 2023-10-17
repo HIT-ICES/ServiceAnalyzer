@@ -16,7 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MServiceBuildBean {
-    private String repo;
+    private String id;
+    private String repoUrl;
     private String serviceName;
-    private Version version;
+    private Version serviceVersion;
 }

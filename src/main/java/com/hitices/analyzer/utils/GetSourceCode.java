@@ -24,7 +24,7 @@ public class GetSourceCode {
 
     private static Logger logger = LogManager.getLogger(GetSourceCode.class);
 
-    private final static String CODE_DIWNLOAD_PATH  = "\\serviceanalyzer\\service";
+    private final static String CODE_DIWNLOAD_PATH  = "/serviceanalyzer/service";
 
 
     /**

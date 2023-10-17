@@ -16,7 +16,7 @@ public class Service {
     private String id;
     private String name;
     private String repo;
-    private String image;
+    private String imageUrl;
     private Version version;
     private List<Interface> interfaces;
     private Resource idleResource = new Resource();
@@ -29,7 +29,7 @@ public class Service {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", repo='" + repo + '\'' +
-                ", image='" + image + '\'' +
+                ", image='" + imageUrl + '\'' +
                 ", version=" + version +
                 ", interfaces=" + interfaces +
                 '}';

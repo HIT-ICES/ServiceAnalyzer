@@ -42,17 +42,22 @@ public class MController {
     @PostMapping("/newService")
     public MResponse newService(@RequestBody MServiceRegisterBean registerBean){
         executorService.submit(() -> {
+            logger.info("Starting analysis: Downloading···");
             UUID uuid = UUID.randomUUID();
             MPathInfo mPathInfo = GetSourceCode.getCodeByVersion(registerBean.getRepo(), registerBean.getVersion().getPatch());
+            logger.info("Starting analysis: Analysing···");
             Service service = GetServiceInfo.getMservice(registerBean.getVersion().getPatch(), mPathInfo);
             service.setId(uuid.toString());
             service.setName(registerBean.getServiceName());
             GetSourceCode.deleteDir(mPathInfo.getLocal());
             Gson gson = new Gson();
             logger.info(gson.toJson(service));
-            String image = buildServiceClient.buildService(new MServiceBuildBean(registerBean.getRepo(),registerBean.getServiceName(),registerBean.getVersion()));
+            logger.info("Starting analysis: Building···");
+            String image = buildServiceClient.buildService(new MServiceBuildBean(service.getId(), registerBean.getRepo(),registerBean.getServiceName(),registerBean.getVersion()));
             if (!image.isEmpty()){
-                service.setImage(image);
+                logger.info(image);
+                service.setImageUrl(image);
+                logger.info("Starting analysis: Registering···");
                 svcServiceClient.addService(service);
             }else {
                 logger.error("Build failed");

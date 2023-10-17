@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "SvcService", url = "http://svc-service:8080")
+@FeignClient(name = "SvcService", url = "http://svc-service:80")
 public interface SvcServiceClient {
     @RequestMapping(value = "/service/add", method = RequestMethod.POST)
     public void addService(@RequestBody Service service);
